@@ -1,0 +1,21 @@
+name: Post to Discord
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Custom message to post to Discord'
+        required: true
+        type: string
+
+jobs:
+  post-to-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Discord
+        run: |
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "content": "${{ github.event.inputs.message }}"
+            }'
